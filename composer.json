@@ -9,7 +9,7 @@
         "homepage": "https://github.com/adilbaig"
     }],
     "require": {
-        "php": ">=8.3",
+        "php": ">=8.4",
         "ext-curl": "*"
     },
     "require-dev": {
