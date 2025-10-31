@@ -2,6 +2,9 @@
 
 namespace PagerDuty;
 
+use ArrayAccess;
+use Exception;
+use JsonSerializable;
 use PagerDuty\Exceptions\PagerDutyException;
 
 /**
@@ -9,21 +12,21 @@ use PagerDuty\Exceptions\PagerDutyException;
  *
  * @author adil
  */
-abstract class Event implements \ArrayAccess, \JsonSerializable
+abstract class Event implements ArrayAccess, JsonSerializable
 {
 
-    protected $dict;
+    protected array $dict = [];
 
     /**
      * ctor
      *
-     * @param string $routingKey
-     * @param string $type - One of 'trigger', 'acknowledge' or 'resolve'
+     * @param  string  $routingKey
+     * @param  string  $type - One of 'trigger', 'acknowledge' or 'resolve'
      */
-    protected function __construct($routingKey, $type)
+    protected function __construct(string $routingKey, string $type)
     {
-        $this->dict['routing_key'] = (string) $routingKey;
-        $this->dict['event_action'] = (string) $type;
+        $this->dict['routing_key'] = $routingKey;
+        $this->dict['event_action'] = $type;
     }
 
     /**
@@ -36,40 +39,41 @@ abstract class Event implements \ArrayAccess, \JsonSerializable
      *
      * @link https://v2.developer.pagerduty.com/docs/events-api-v2#alert-de-duplication
      *
-     * @param string $key
+     * @param  string  $key
      *
      * @return self
      */
-    public function setDeDupKey($key)
+    public function setDeDupKey(string $key): static
     {
-        $this->dict['dedup_key'] = substr((string) $key, 0, 255);
+        $this->dict['dedup_key'] = substr($key, 0, 255);
         return $this;
     }
 
     /**
-     * Get the request json as an array
+     * Get the request JSON as an array
      * Useful for debugging or logging.
      *
      * @return array
      */
-    public function toArray()
+    public function toArray(): array
     {
-        return $this->dict;
+        return $this->dict ?? [];
     }
 
     /**
      * Send the event to PagerDuty
      *
-     * @param array $result (Opt)(Pass by reference) - If this parameter is given the result of the CURL call will be filled here. The response is an associative array.
-     *
-     * @throws PagerDutyException - If status code == 400
+     * @param array|null  $result (Opt) (Pass by reference) - If this parameter is given, the result of the CURL call will be filled here. The response is an associative array.
      *
      * @return int - HTTP response code
      *  202 - Event Processed
      *  400 - Invalid Event. Throws a PagerDutyException
      *  403 - Rate Limited. Slow down and try again later.
+     * 
+     * @throws PagerDutyException - If status code == 400
+     * @noinspection PhpUnused
      */
-    public function send(&$result = null)
+    public function send(?array &$result = null): int
     {
         $jsonStr = json_encode($this);
 
@@ -93,40 +97,44 @@ abstract class Event implements \ArrayAccess, \JsonSerializable
 
         return $responseCode;
     }
+    
     /* -------- ArrayAccess -------- */
 
-    public function offsetExists($key)
+    public function offsetExists(mixed $offset): bool
     {
-        return array_key_exists($key, $this->dict);
+        return array_key_exists($offset, $this->dict);
     }
 
-    public function offsetGet($key)
+    public function offsetGet(mixed $offset): mixed
     {
-        if (!$this->offsetExists($key)) {
-            return;
+        if (!$this->offsetExists($offset)) {
+            return null;
         }
 
-        return $this->dict[$key];
+        return $this->dict[$offset];
     }
 
-    public function offsetSet($key, $value)
+    /**
+     * @throws Exception
+     */
+    public function offsetSet(mixed $offset, mixed $value): void
     {
-        if (empty($key) || is_string($key)) {
-            throw new \Exception("Key must be a non-empty string. It is `" . var_export($key, true) . "`");
+        if (empty($offset) || is_string($offset)) {
+            throw new Exception("Offset must be a non-empty string. It is `" . var_export($offset, true) . "`");
         }
 
-        $this->dict[$key] = $value;
+        $this->dict[$offset] = $value;
     }
 
-    public function offsetUnset($key)
+    public function offsetUnset(mixed $offset): void
     {
-        if ($this->offsetExists($key)) {
-            unset($this->dict[$key]);
+        if ($this->offsetExists($offset)) {
+            unset($this->dict[$offset]);
         }
     }
     /* -------- JsonSerializable -------- */
 
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return $this->toArray();
     }

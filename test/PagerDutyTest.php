@@ -8,10 +8,10 @@
 use PagerDuty\AcknowledgeEvent;
 use PagerDuty\ResolveEvent;
 use PagerDuty\TriggerEvent;
+use PHPUnit\Framework\TestCase;
 
-class PagerDutyTest extends \PHPUnit\Framework\TestCase
+class PagerDutyTest extends TestCase
 {
-
     public function testAckEvent()
     {
         $routingKey = 'sv123';
@@ -90,15 +90,14 @@ class PagerDutyTest extends \PHPUnit\Framework\TestCase
         $event = new TriggerEvent($routingKey, $msg, 'localhost', TriggerEvent::ERROR, true);
 
         $expect = ['dedup_key' => 'md5-' . md5($msg)];
-        $this->assertArraySubset($expect, $event->toArray());
+        $this->assertArrayIsEqualToArrayOnlyConsideringListOfKeys($expect, $event->toArray(), array_keys($expect));
     }
 
-    /**
-     * @expectedException TypeError
-     */
     public function testTypeError()
     {
-        $event = new TriggerEvent('sv123', 'Blah');
-        $event->setDetails(null);
+        $this->expectException(TypeError::class);
+        $event = new TriggerEvent('sv123', 'Blah', 'foo', TriggerEvent::ERROR, true);
+        /** @noinspection PhpParamsInspection */
+        $event->setPayloadCustomDetails(null);
     }
 }

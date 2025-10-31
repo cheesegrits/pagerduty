@@ -2,15 +2,17 @@
 
 namespace PagerDuty\Exceptions;
 
+use Exception;
+
 /**
  * PagerDutyException
  *
  * @author adil
  */
-class PagerDutyException extends \Exception
+class PagerDutyException extends Exception
 {
 
-    protected $errors;
+    protected array $errors;
 
     public function __construct($message, array $errors)
     {
@@ -21,8 +23,9 @@ class PagerDutyException extends \Exception
     /**
      * 
      * @return array
+     * @noinspection PhpUnused
      */
-    public function getErrors()
+    public function getErrors(): array
     {
         return $this->errors;
     }
