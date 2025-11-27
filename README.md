@@ -2,6 +2,13 @@ PHP PagerDuty Events API
 =========
 PHP implementation of the [PagerDuty Events API V2](https://v2.developer.pagerduty.com/docs/events-api-v2)
 
+Request for Maintainer
+---
+`8th June 2025` If you're interested in taking over the maintenance of this plugin, let me know. 
+
+*A bit of background.* I started this plugin many years ago while working at a fintech startup. Our Ops team relied on PagerDuty and we wanted to hook up our internal alerting systems to PD. I didn't quite like what was available. I wanted something that was simple and flexible, but nothing more. This plugin has long since fulfilled that purpose. Over time people have come to use, contribute and rely on it. It is [PD's recommended community plugin](https://developer.pagerduty.com/docs/api-client-libraries) and the most downloaded PD plugin [on Packagist](https://packagist.org/?query=pagerduty). I've long since moved on; from the startup, from PHP and from PagerDuty. It's time someone else took over the maintenance here.
+
+Your mission, should you choose to accept it, is to upgrade this plugin to PHP 8.4. Fork this repo, make the changes and send me a PR. Once committed, I will transfer ownership of the repo over.
 
 UPGRADE NOTICE
 ---
