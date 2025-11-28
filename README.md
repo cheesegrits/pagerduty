@@ -193,5 +193,5 @@ In Ubuntu 16.04, install it like so :
 
 In Ubuntu 18.04, install it like so :
 
-    sudo apt install php7.2-curl
+    sudo apt install php8.3-curl
 

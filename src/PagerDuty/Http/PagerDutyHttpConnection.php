@@ -18,7 +18,7 @@ class PagerDutyHttpConnection
         CURLOPT_SSLVERSION      => 6,
         CURLOPT_CONNECTTIMEOUT  => 10,
         CURLOPT_RETURNTRANSFER  => true,
-        CURLOPT_TIMEOUT         => 60,                                                                                  // maximum number of seconds to allow cURL functions to execute
+        CURLOPT_TIMEOUT         => 60,
         CURLOPT_USERAGENT       => 'PagerDuty-PHP-SDK',
         CURLOPT_VERBOSE         => 0,
         CURLOPT_SSL_VERIFYHOST  => 2,
@@ -26,7 +26,7 @@ class PagerDutyHttpConnection
         CURLOPT_SSL_CIPHER_LIST => 'TLSv1:TLSv1.2'
     );
 
-    const string HEADER_SEPARATOR = ';';
+    const HEADER_SEPARATOR = ';';
 
     /**
      * @var string

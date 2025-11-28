@@ -12,12 +12,12 @@ class TriggerEvent extends Event
 {
 
     /** @noinspection PhpUnused */
-    const string CRITICAL = 'critical';
-    const string ERROR = 'error';
+    const CRITICAL = 'critical';
+    const ERROR = 'error';
     /** @noinspection PhpUnused */
-    const string WARNING = 'warning';
+    const WARNING = 'warning';
     /** @noinspection PhpUnused */
-    const string INFO = 'info';
+    const INFO = 'info';
 
     /**
      *
