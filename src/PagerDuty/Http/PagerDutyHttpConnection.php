@@ -6,6 +6,7 @@ use PagerDuty\Event;
 use PagerDuty\Exceptions\PagerDutyConfigurationException;
 use PagerDuty\Exceptions\PagerDutyException;
 
+/** @noinspection PhpUnused */
 class PagerDutyHttpConnection
 {
     /**
@@ -13,11 +14,11 @@ class PagerDutyHttpConnection
      *
      * @var array
      */
-    public static $defaultCurlOptions = array(
+    public static array $defaultCurlOptions = array(
         CURLOPT_SSLVERSION      => 6,
         CURLOPT_CONNECTTIMEOUT  => 10,
         CURLOPT_RETURNTRANSFER  => true,
-        CURLOPT_TIMEOUT         => 60,                                                                                  // maximum number of seconds to allow cURL functions to execute
+        CURLOPT_TIMEOUT         => 60,
         CURLOPT_USERAGENT       => 'PagerDuty-PHP-SDK',
         CURLOPT_VERBOSE         => 0,
         CURLOPT_SSL_VERIFYHOST  => 2,
@@ -30,38 +31,38 @@ class PagerDutyHttpConnection
     /**
      * @var string
      */
-    private $url;
+    private string $url;
 
     /**
      * @var array
      */
-    private $headers = array();
+    private array $headers = [];
 
     /**
      * @var array
      */
-    protected $curlOptions = array();
+    protected array $curlOptions = [];
 
     /**
      * @var int
      */
-    protected $responseCode;
+    protected int $responseCode;
 
     /**
      * PagerDutyHttpConnection constructor.
      *
-     * @param null|string $url - PagerDuty's API
+     * @param  string|null  $url - PagerDuty's API
      */
-    public function __construct($url = null)
+    public function __construct(?string $url = null)
     {
         $url = ($url !== null) ? $url : 'https://events.pagerduty.com/v2/enqueue';
 
         $this->setUrl($url);
         $this->setCurlOptions(self::$defaultCurlOptions);
-        $this->addHeader('Content-Type','application/json');                                                            # assume this is default; can override anytime
+        $this->addHeader('Content-Type','application/json'); # assume this is the default; can override anytime
 
         $curl       = curl_version();
-        $sslVersion = isset($curl['ssl_version']) ? $curl['ssl_version'] : '';
+        $sslVersion = $curl['ssl_version'] ?? '';
 
         if ($sslVersion
             && substr_compare($sslVersion, "NSS/", 0, strlen("NSS/")) === 0)
@@ -74,25 +75,22 @@ class PagerDutyHttpConnection
     /**
      * Set Headers
      *
-     * @param array $headers
+     * @param  array  $headers
+     * @noinspection PhpUnused
      */
-    public function setHeaders($headers)
+    public function setHeaders(array $headers): void
     {
-        if (!is_array($headers)) {
-            throw new \InvalidArgumentException('Argument expected to be of type array');
-        }
-
         $this->headers = $headers;
     }
 
     /**
      * Adds a Header
      *
-     * @param      $name
-     * @param      $value
-     * @param bool $overWrite allows you to override header value
+     * @param  string  $name
+     * @param  string  $value
+     * @param  bool  $overWrite  allows you to override the header value
      */
-    public function addHeader($name, $value, $overWrite = true)
+    public function addHeader(string $name, string $value, bool $overWrite = true): void
     {
         if (!array_key_exists($name, $this->headers)
             || $overWrite)
@@ -109,7 +107,7 @@ class PagerDutyHttpConnection
      *
      * @return array
      */
-    public function getHeaders()
+    public function getHeaders(): array
     {
         return $this->headers;
     }
@@ -117,10 +115,11 @@ class PagerDutyHttpConnection
     /**
      * Get Header by Name
      *
-     * @param $name
+     * @param  string  $name
      * @return string|null
+     * @noinspection PhpUnused
      */
-    public function getHeader($name)
+    public function getHeader(string $name): ?string
     {
         if (array_key_exists($name, $this->headers)) {
             return $this->headers[$name];
@@ -132,9 +131,10 @@ class PagerDutyHttpConnection
     /**
      * Removes a Header
      *
-     * @param $name
+     * @param  string  $name
+     * @noinspection PhpUnused
      */
-    public function removeHeader($name)
+    public function removeHeader(string $name): void
     {
         unset($this->headers[$name]);
     }
@@ -142,9 +142,9 @@ class PagerDutyHttpConnection
     /**
      * Set service url
      *
-     * @param $url
+     * @param  string  $url
      */
-    public function setUrl($url)
+    public function setUrl(string $url): void
     {
         $this->url = $url;
     }
@@ -154,7 +154,7 @@ class PagerDutyHttpConnection
      *
      * @return string
      */
-    public function getUrl()
+    public function getUrl(): string
     {
         return $this->url;
     }
@@ -162,10 +162,11 @@ class PagerDutyHttpConnection
     /**
      * Add Curl Option
      *
-     * @param string $name
+     * @param  string  $name
      * @param mixed  $value
+     * @noinspection PhpUnused
      */
-    public function addCurlOption($name, $value)
+    public function addCurlOption(string $name, mixed $value): void
     {
         $this->curlOptions[$name] = $value;
     }
@@ -173,9 +174,9 @@ class PagerDutyHttpConnection
     /**
      * Removes a curl option from the list
      *
-     * @param $name
+     * @param  string  $name
      */
-    public function removeCurlOption($name)
+    public function removeCurlOption(string $name): void
     {
         unset($this->curlOptions[$name]);
     }
@@ -183,14 +184,10 @@ class PagerDutyHttpConnection
     /**
      * Set Curl Options. Overrides all curl options
      *
-     * @param array $options
+     * @param  array  $options
      */
-    public function setCurlOptions($options)
+    public function setCurlOptions(array $options): void
     {
-        if (!\is_array($options)) {
-            throw new \InvalidArgumentException('Argument expected to be of type array');
-        }
-
         $this->curlOptions = $options;
     }
 
@@ -199,7 +196,7 @@ class PagerDutyHttpConnection
      *
      * @return array
      */
-    public function getCurlOptions()
+    public function getCurlOptions(): array
     {
         return $this->curlOptions;
     }
@@ -207,10 +204,11 @@ class PagerDutyHttpConnection
     /**
      * Get Curl Option by name
      *
-     * @param $name
+     * @param  string  $name
      * @return mixed|null
+     * @noinspection PhpUnused
      */
-    public function getCurlOption($name)
+    public function getCurlOption(string $name): mixed
     {
         if (array_key_exists($name, $this->curlOptions)) {
             return $this->curlOptions[$name];
@@ -220,12 +218,13 @@ class PagerDutyHttpConnection
     }
 
     /**
-     * Set ssl parameters for certificate based client authentication
+     * Set ssl parameters for certificate-based client authentication
      *
-     * @param      $certPath
-     * @param null $passPhrase
+     * @param  string  $certPath
+     * @param  string|null  $passPhrase
+     * @noinspection PhpUnused
      */
-    public function setSSLCert($certPath, $passPhrase = null)
+    public function setSSLCert(string $certPath, ?string $passPhrase = null): void
     {
         $this->curlOptions[CURLOPT_SSLCERT] = realpath($certPath);
 
@@ -239,9 +238,10 @@ class PagerDutyHttpConnection
     /**
      * Set connection timeout in seconds
      *
-     * @param integer $timeout
+     * @param  integer  $timeout
+     * @noinspection PhpUnused
      */
-    public function setTimeout($timeout)
+    public function setTimeout(int $timeout): void
     {
         $this->curlOptions[CURLOPT_CONNECTTIMEOUT] = $timeout;
     }
@@ -249,10 +249,11 @@ class PagerDutyHttpConnection
     /**
      * Set HTTP proxy information
      *
-     * @param string $proxy
+     * @param  string  $proxy
      * @throws PagerDutyConfigurationException
+     * @noinspection PhpUnused
      */
-    public function setProxy($proxy)
+    public function setProxy(string $proxy): void
     {
         $urlParts = parse_url($proxy);
 
@@ -276,9 +277,9 @@ class PagerDutyHttpConnection
     /**
      * Sets response code from curl call
      *
-     * @param int $code
+     * @param  int  $code
      */
-    public function setResponseCode($code)
+    public function setResponseCode(int $code): void
     {
         $this->responseCode = $code;
     }
@@ -288,7 +289,7 @@ class PagerDutyHttpConnection
      *
      * @return int|null
      */
-    public function getResponseCode()
+    public function getResponseCode(): ?int
     {
         return $this->responseCode;
     }
@@ -296,9 +297,10 @@ class PagerDutyHttpConnection
     /**
      * Sets the User-Agent string on the HTTP request
      *
-     * @param string $userAgentString
+     * @param  string  $userAgentString
+     * @noinspection PhpUnused
      */
-    public function setUserAgent($userAgentString)
+    public function setUserAgent(string $userAgentString): void
     {
         $this->curlOptions[CURLOPT_USERAGENT] = $userAgentString;
     }
@@ -306,22 +308,18 @@ class PagerDutyHttpConnection
     /**
      * Send the event to PagerDuty
      *
-     * @param Event $payload
-     * @param array $result (Opt)(Pass by reference) - If this parameter is given the result of the CURL call will be filled here. The response is an associative array.
+     * @param  Event  $payload
+     * @param  array|null  $result  (Opt) (Pass by reference) - If this parameter is given, the result of the CURL call will be filled here. The response is an associative array.
      *
-     * @throws PagerDutyException - If status code == 400
-     *
-     * @return int - HTTP response code
+     * @return int|null - HTTP response code
      *  202 - Event Processed
      *  400 - Invalid Event. Throws a PagerDutyException
      *  403 - Rate Limited. Slow down and try again later.
+     * @throws PagerDutyException - If status code == 400
+     * @noinspection PhpUnused
      */
-    public function send($payload, &$result = null)
+    public function send(Event $payload, array &$result = null): ?int
     {
-        if (!$payload instanceof Event) {
-            throw new \InvalidArgumentException('Argument expected to be of type Event');
-        }
-
         $result       = $this->post(json_encode($payload));
         $responseCode = $this->getResponseCode();
 
@@ -335,17 +333,13 @@ class PagerDutyHttpConnection
     /**
      * POST data to PagerDuty
      *
-     * @param string $payload
+     * @param  string  $payload
      * @return mixed
      */
-    protected function post($payload)
+    protected function post(string $payload): mixed
     {
-        if (!\is_string($payload)) {
-            throw new \InvalidArgumentException('Argument expected to be of type string');
-        }
-
         $url = $this->getUrl();
-        $this->addHeader('Content-Length', \strlen($payload));
+        $this->addHeader('Content-Length', strlen($payload));
 
         $curl = curl_init($url);
 
@@ -358,7 +352,7 @@ class PagerDutyHttpConnection
         curl_setopt($curl, CURLOPT_HTTPHEADER, $this->getHeaders());
 
         $response = curl_exec($curl);
-        $result   = is_array($response) ? json_decode($response, true): $response;
+        $result   = is_string($response) ? json_decode($response, true) : $response;
 
         $this->setResponseCode(curl_getinfo($curl, CURLINFO_HTTP_CODE));
 
