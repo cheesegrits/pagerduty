@@ -1,6 +1,8 @@
 PHP PagerDuty Events API
 =========
-PHP implementation of the [PagerDuty Events API V2](https://v2.developer.pagerduty.com/docs/events-api-v2)
+PHP implementation of the [PagerDuty Events API V2](https://developer.pagerduty.com/api-reference/f80f5db9acbe3-pager-duty-v2-events-api)
+
+[![Latest Stable Version](https://poser.pugx.org/adilbaig/pagerduty/v/stable.svg)](https://packagist.org/packages/adilbaig/pagerduty) [![Total Downloads](https://poser.pugx.org/adilbaig/pagerduty/downloads.svg)](https://packagist.org/packages/adilbaig/pagerduty) 
 
 Request for Maintainer
 ---
@@ -10,16 +12,19 @@ Request for Maintainer
 
 Your mission, should you choose to accept it, is to upgrade this plugin to PHP 8.4. Fork this repo, make the changes and send me a PR. Once committed, I will transfer ownership of the repo over.
 
-UPGRADE NOTICE
----
-The [PagerDuty Events API V2](https://v2.developer.pagerduty.com/docs/events-api-v2) is **not backwards compatible** with the [PagerDuty Events API V1](https://v2.developer.pagerduty.com/docs/events-api). Hence, this API has changed. If you are upgrading from a [2.* release](https://github.com/adilbaig/pagerduty/releases), make sure you pay attention to the contructor of the `TriggerEvent`
+**Update (2025-12-10):** @cheesegrits will be taking over maintenance of this project.
 
-[![Latest Stable Version](https://poser.pugx.org/adilbaig/pagerduty/v/stable.svg)](https://packagist.org/packages/adilbaig/pagerduty) [![Total Downloads](https://poser.pugx.org/adilbaig/pagerduty/downloads.svg)](https://packagist.org/packages/adilbaig/pagerduty) 
+Compatibility
+---
+
+1. **v4.***: Requires `"php": ">=8.0"`  . PagerDuty Events API V2.
+2. **v3.***: Requires `"php": ">=5.4.0"`. PagerDuty Events API V2. _If you are upgrading from a [2.* release](https://github.com/adilbaig/pagerduty/releases), make sure you pay attention to the contructor of the `TriggerEvent`_
+3. **v2.***: Requires `"php": ">=5.4.0"`. PagerDuty Events API V1.
 
 Features
 ---
 
-- Compatible with [PagerDuty Events API V2](https://developer.pagerduty.com/docs/events-api-v2/trigger-events/).
+- Compatible with [PagerDuty Events API V2](https://developer.pagerduty.com/api-reference/f80f5db9acbe3-pager-duty-v2-events-api).
 - Trigger, Acknowledge and Resolve incidents.
 - Attach [Links](https://developer.pagerduty.com/docs/events-api-v2/trigger-events/#the-links-property) and [Images](https://developer.pagerduty.com/docs/events-api-v2/trigger-events/#the-images-property) to your incident reports.
 - Unit Tests
@@ -27,7 +32,18 @@ Features
 
 Installation
 ---
-Add this line to your project's `composer.json`
+For **PHP 8.\*** projects, add this line to your project's `composer.json`
+````
+{
+...
+    "require": {
+        "adilbaig/pagerduty": "4.*"
+    }
+...
+}
+````
+
+For PHP versions < 8, add this line to your project's `composer.json`
 ````
 {
 ...
