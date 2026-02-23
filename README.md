@@ -4,9 +4,17 @@ PHP implementation of the [PagerDuty Events API V2](https://developer.pagerduty.
 
 [![Latest Stable Version](https://poser.pugx.org/adilbaig/pagerduty/v/stable.svg)](https://packagist.org/packages/adilbaig/pagerduty) [![Total Downloads](https://poser.pugx.org/adilbaig/pagerduty/downloads.svg)](https://packagist.org/packages/adilbaig/pagerduty) 
 
+New Maintainer
+---
+`7th January 2026` ownership of this package has been transfered to me, @cheesegrits.
+
+Many thanks to @adilbaig for authoring and maintaining this package and for making the effort to find and transfer to a new owner, rather than just abandoning it.
+
+I doubt I will be making any major changes or adding new features, I simply needed the package as-is to support some long-term projects I work on.  But if you need any changes or features, feel free to raise an issue.
+
 Request for Maintainer
 ---
-`8th June 2025` If you're interested in taking over the maintenance of this plugin, let me know. 
+`8th June 2025` If you're interested in taking over the maintenance of this plugin, let me know.
 
 *A bit of background.* I started this plugin many years ago while working at a fintech startup. Our Ops team relied on PagerDuty and we wanted to hook up our internal alerting systems to PD. I didn't quite like what was available. I wanted something that was simple and flexible, but nothing more. This plugin has long since fulfilled that purpose. Over time people have come to use, contribute and rely on it. It is [PD's recommended community plugin](https://developer.pagerduty.com/docs/api-client-libraries) and the most downloaded PD plugin [on Packagist](https://packagist.org/?query=pagerduty). I've long since moved on; from the startup, from PHP and from PagerDuty. It's time someone else took over the maintenance here.
 
